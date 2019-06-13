@@ -9,6 +9,7 @@ services:
 
   backend:
     build: ./backend
+    command: bash -c 'cd /backend; /wait; yarn dev'
     volumes:
       - ./backend:/backend
 
