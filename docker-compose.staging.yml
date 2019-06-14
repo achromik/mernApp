@@ -6,7 +6,8 @@ services:
     image: frontend
 
   backend:
-    build: ./backend
+    build:
+      dockerfile: prod.Dockerfile
     env_file:
       - ./.env
     environment:

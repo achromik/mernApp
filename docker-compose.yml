@@ -10,6 +10,8 @@ services:
     image: ${APP_NAME}_backend
     container_name: ${APP_NAME}_backend
     restart: always
+    build:
+      context: ./backend
     depends_on:
       - mongo
     links:
