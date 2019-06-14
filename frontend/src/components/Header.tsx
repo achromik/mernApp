@@ -1,7 +1,7 @@
 import React from 'react';
 
-interface IProps {
+interface HeaderProps {
     title: string;
 }
 
-export const Header: React.FC<IProps> = (props: IProps) => <h1>{props.title}</h1>;
+export const Header: React.FC<HeaderProps> = (props: HeaderProps) => <h1>{props.title}</h1>;
