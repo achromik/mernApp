@@ -6,11 +6,14 @@ services:
     command: bash -c 'cd /frontend; yarn; yarn start'
     volumes:
       - ./frontend:/frontend
+      - /frontend/node_modules
 
   backend:
-    build: ./backend
+    build:
+      dockerfile: dev.Dockerfile
     volumes:
       - ./backend:/backend
+      - /backend/node_modules
 
   nginx:
     build:
