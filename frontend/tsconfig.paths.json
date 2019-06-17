@@ -3,7 +3,8 @@
         "baseUrl": ".",
         "paths": {
             "Components/*": ["./src/components/*"],
-            "Common/*": ["./src/common/*"]
+            "Common/*": ["./src/common/*"],
+            "@src/*": ["./src/*"]
         },
         "allowJs": true
     }
