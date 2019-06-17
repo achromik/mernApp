@@ -2,8 +2,9 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "Components/*": ["./src/components/*"]
-        }
-        // "isolatedModules": false
+            "Components/*": ["./src/components/*"],
+            "Common/*": ["./src/common/*"]
+        },
+        "allowJs": true
     }
 }
