@@ -3,14 +3,15 @@ import * as cors from 'cors';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 
-import User from '../users/user.model';
+import HttpException from '../exceptions/HttpException';
+import User from './user.model';
 
 const users = express.Router();
 users.use(cors());
 
 const secretKey = process.env.SECRET_KEY || 'secret';
 
-users.post('/register', (req, res) => {
+users.post('/register', (req, res, next) => {
     const today = new Date();
 
     const userData = {
@@ -30,22 +31,22 @@ users.post('/register', (req, res) => {
                     userData.password = hash;
                     User.create(userData)
                         .then(user => {
-                            res.json({ status: user.email + ' registered!' });
+                            res.status(200).send(`${user.email} registered!`);
                         })
                         .catch(err => {
-                            res.json({ error: err });
+                            next(err);
                         });
                 });
             } else {
-                throw { name: 'User already exists' };
+                next(new HttpException(409, 'User already exists'));
             }
         })
         .catch(err => {
-            res.json({ error: err });
+            next(err);
         });
 });
 
-users.post('/login', (req, res) => {
+users.post('/login', (req, res, next) => {
     User.findOne({
         email: req.body.email,
     })
@@ -60,17 +61,17 @@ users.post('/login', (req, res) => {
                 const token = jwt.sign(payload, secretKey, {
                     expiresIn: 1440,
                 });
-                res.send(token);
+                res.status(200).send({ token });
             } else {
-                throw { name: 'Invalid username or/and password' };
+                next(new HttpException(400, 'Invalid username or/and password.'));
             }
         })
         .catch(err => {
-            res.json({ error: err });
+            next(err);
         });
 });
 
-users.get('/profile', (req, res) => {
+users.get('/profile', (req, res, next) => {
     const token = req.headers.authorization || '';
     try {
         const decode = jwt.verify(token, secretKey) as { _id: string };
@@ -78,16 +79,16 @@ users.get('/profile', (req, res) => {
         User.findById(decode._id)
             .then(user => {
                 if (user) {
-                    res.json(user);
+                    res.status(200).json(user);
                 } else {
-                    throw { name: 'User does not exist' };
+                    next(new HttpException(404, 'User does not exist'));
                 }
             })
             .catch(err => {
-                res.json({ error: err });
+                next(err);
             });
     } catch (err) {
-        res.json({ error: err });
+        next(err);
     }
 });
 

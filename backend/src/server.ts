@@ -3,7 +3,8 @@ import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
 import * as cors from 'cors';
 
-import usersRoute from './routes/users.routes';
+import usersRoute from './users/users.routes';
+import errorMiddleware from './middleware/error.middleware';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -18,6 +19,8 @@ app.use(
 );
 
 app.use('/api/users', usersRoute);
+
+app.use(errorMiddleware);
 
 mongoose
     .connect(mongoURI, { useNewUrlParser: true, useCreateIndex: true })
