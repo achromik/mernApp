@@ -1,14 +1,14 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch } from 'react-router-dom';
 
-import { CustomRoute } from 'Common/components/CustomRoute';
+import { CustomRoute } from '@src/routing/CustomRoute';
 import { Spinner } from 'Common/components/Spinner';
 
 const HomePage = lazy(() => import('Components/HomePage/HomePage'));
-const Login = lazy(() => import('Components/Login/Login'));
+const LoginPage = lazy(() => import('Components/LoginPage/LoginPage'));
+const ProfilePage = lazy(() => import('Components/ProfilePage/ProfilePage'));
 
-// export const Routes = ({ isAuthenticated }) => (
-export const Routes = () => (
+export const Routes = ({ isAuthenticated }: { isAuthenticated: boolean }) => (
     <Suspense fallback={<Spinner />}>
         <Switch>
             <CustomRoute
@@ -16,16 +16,23 @@ export const Routes = () => (
                 key="/"
                 path="/"
                 component={HomePage}
-                secured={false}
-                isAuthenticated={false}
+                isAuthenticated={isAuthenticated}
             />
             <CustomRoute
                 exact
                 key="/login"
                 path="/login"
-                component={Login}
-                secured={false}
-                isAuthenticated={false}
+                component={LoginPage}
+                isAuthenticated={isAuthenticated}
+            />
+            <CustomRoute
+                exact
+                key="/profile"
+                path="/profile"
+                component={ProfilePage}
+                secured={true}
+                isAuthenticated={isAuthenticated}
+                redirectTo="/login"
             />
         </Switch>
     </Suspense>

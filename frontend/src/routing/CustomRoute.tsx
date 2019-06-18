@@ -20,14 +20,15 @@ export const CustomRoute: React.FC<CustomRouteProps> = ({
     ...rest
 }) => {
     if (!redirectTo) {
-        redirectTo = secured ? '/' : '/login ';
+        redirectTo = secured ? '/' : '/ ';
     }
+
     return (
         <Route
             path={path}
             {...rest}
             render={props =>
-                isAuthenticated === secured ? (
+                isAuthenticated === secured || !secured ? (
                     <Component {...props} />
                 ) : (
                     <Redirect to={redirectTo} />
