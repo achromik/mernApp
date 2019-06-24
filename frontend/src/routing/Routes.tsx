@@ -7,6 +7,7 @@ import { Spinner } from 'Common/components/Spinner';
 const HomePage = lazy(() => import('Components/HomePage/HomePage'));
 const LoginPage = lazy(() => import('Components/LoginPage/LoginPage'));
 const ProfilePage = lazy(() => import('Components/ProfilePage/ProfilePage'));
+const RegistrationPage = lazy(() => import('Components/RegistrationPage/RegistrationPage'));
 
 export const Routes = ({ isAuthenticated }: { isAuthenticated: boolean }) => (
     <Suspense fallback={<Spinner />}>
@@ -32,7 +33,13 @@ export const Routes = ({ isAuthenticated }: { isAuthenticated: boolean }) => (
                 component={ProfilePage}
                 secured={true}
                 isAuthenticated={isAuthenticated}
-                redirectTo="/login"
+            />
+            <CustomRoute
+                exact
+                key="/registration"
+                path="/registration"
+                component={RegistrationPage}
+                isAuthenticated={isAuthenticated}
             />
         </Switch>
     </Suspense>
