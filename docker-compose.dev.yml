@@ -1,0 +1,39 @@
+version: '3.5'
+
+services:
+  frontend:
+    build: ./frontend
+    command: bash -c 'cd /frontend; yarn; yarn start'
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+
+  backend:
+    build:
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./backend:/backend
+      - /backend/node_modules
+
+  nginx:
+    build:
+      context: ./nginx
+      args:
+        CONFIG_FILE: dev.conf
+    ports:
+      - 8001:80
+
+  mongo:
+    image: mongo
+    ports:
+    - 27017:27017
+    volumes:
+    - ./database:/data/db
+
+
+
+
+
+
+
+

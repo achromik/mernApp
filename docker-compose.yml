@@ -1,0 +1,38 @@
+version: '3.5'
+
+services:
+  frontend:
+    image: ${APP_NAME}_frontend
+    container_name: ${APP_NAME}_frontend
+    restart: always
+
+  backend:
+    image: ${APP_NAME}_backend
+    container_name: ${APP_NAME}_backend
+    restart: always
+    build:
+      context: ./backend
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    environment:
+      WAIT_HOSTS: mongo:27017
+
+
+  nginx:
+    image: ${APP_NAME}_nginx
+    container_name: ${APP_NAME}_nginx
+    restart: always
+    ports:
+      - $HOSTPORT:80
+    depends_on:
+      - frontend
+      - backend
+
+  mongo:
+    image: ${APP_NAME}_mongo
+    container_name: ${APP_NAME}_mongo
+    restart: always
+
+
