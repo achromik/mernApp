@@ -6,3 +6,9 @@ export class UserNotFoundException extends HttpException {
         super(404, message);
     }
 }
+
+export class UserAlreadyExistException extends HttpException {
+    public constructor() {
+        super(409, 'User already exists.');
+    }
+}
