@@ -1,7 +1,5 @@
 import omit from 'lodash/omit';
 
-// import { config } from 'src/config/config';
-
 export class Http {
     public GET<R>(path: string): Promise<R> {
         return this.makeRequest<R>('GET', path);
@@ -18,10 +16,6 @@ export class Http {
     public PATCH<P, R = P>(path: string, body: P): Promise<R> {
         return this.makeRequest<P, R>('PATCH', path, body);
     }
-
-    // public formDataPATCH<P, R = P>(path: string, body: P): Promise<R> {
-    //     return this.makeRequest<P, R>('PATCH', path, this.prepareFormData<P>(body), true);
-    // }
 
     public DELETE<R>(path: string): Promise<R> {
         return this.makeRequest<R>('DELETE', path);
@@ -46,7 +40,6 @@ export class Http {
         );
 
         const options = {
-            // credentials: 'include',
             body,
             headers,
             method,
