@@ -5,8 +5,7 @@ services:
     image: ${APP_NAME}_frontend
     container_name: ${APP_NAME}_frontend
     restart: always
-    env_file:
-      - ./.env
+
 
   backend:
     image: ${APP_NAME}_backend

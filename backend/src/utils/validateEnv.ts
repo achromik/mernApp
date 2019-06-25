@@ -5,5 +5,6 @@ export const validateEnv = (): void => {
         PORT: port(),
         DATABASE_URI: str(),
         DATABASE_NAME: str(),
+        SECRET_KEY: str(),
     });
 };
