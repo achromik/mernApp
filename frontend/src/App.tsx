@@ -15,10 +15,12 @@ const epicMiddleware = createEpicMiddleware();
 
 const persistedState = loadState();
 
+const composeEnhancer = composeWithDevTools({ trace: true });
+
 const store = createStore(
     rootReducer,
     persistedState,
-    composeWithDevTools(applyMiddleware(epicMiddleware)),
+    composeEnhancer(applyMiddleware(epicMiddleware)),
 );
 
 store.dispatch(appInit());
@@ -26,7 +28,7 @@ store.dispatch(appInit());
 store.subscribe(
     throttle(() => {
         saveState({
-            authentication: store.getState().authentication,
+            ...store.getState(),
         });
     }, 500),
 );
