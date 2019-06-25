@@ -20,7 +20,7 @@ export const CustomRoute: React.FC<CustomRouteProps> = ({
     ...rest
 }) => {
     if (!redirectTo) {
-        redirectTo = secured ? '/' : '/ ';
+        redirectTo = secured ? '/login' : '/ ';
     }
 
     return (
