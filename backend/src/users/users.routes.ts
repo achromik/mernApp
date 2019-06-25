@@ -31,7 +31,7 @@ users.post('/register', (req, res, next) => {
                     userData.password = hash;
                     User.create(userData)
                         .then(user => {
-                            res.status(200).send(`${user.email} registered!`);
+                            res.status(200).json(user);
                         })
                         .catch(err => {
                             next(err);
