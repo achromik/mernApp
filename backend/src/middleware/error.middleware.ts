@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
-import HttpException from '../exceptions/HttpException';
+import { HttpException } from '../exceptions/HttpException';
 
-const errorMiddleware = (
+export const errorMiddleware = (
     error: HttpException,
-    request: Request,
+    _request: Request,
     response: Response,
     _next: NextFunction,
 ): void => {
@@ -14,5 +15,3 @@ const errorMiddleware = (
         message,
     });
 };
-
-export default errorMiddleware;
