@@ -13,3 +13,10 @@ export interface Credentials {
 export interface JWTTokenData {
     token: string;
 }
+
+export interface SignUpState {
+    message: string;
+    failed: boolean;
+    isFetching: boolean;
+    succeeded: boolean;
+}

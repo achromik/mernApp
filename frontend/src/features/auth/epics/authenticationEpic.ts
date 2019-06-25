@@ -1,15 +1,15 @@
-import { combineEpics, ofType } from 'redux-observable';
-import { map, mergeMap, pluck, switchMap, take, takeUntil, tap, finalize } from 'rxjs/operators';
+import { combineEpics, ofType, ActionsObservable } from 'redux-observable';
+import { mergeMap, pluck } from 'rxjs/operators';
 
 import * as authAction from '../actions/authenticationActions';
-import { history } from '@src/config/history';
+import { Credentials } from '../models/auth';
 
 export function authenticationEpicFactory(userAuthenticatorService: any) {
-    const loginEpic = (action$: any) =>
+    const loginEpic = (action$: ActionsObservable<authAction.LoginRequestAction>) =>
         action$.pipe(
             ofType(authAction.LOGIN_REQUESTED),
             pluck('payload'),
-            mergeMap(credentials =>
+            mergeMap((credentials: Credentials) =>
                 userAuthenticatorService
                     .login(credentials)
                     .then((res: { token: string }) => {
@@ -17,9 +17,24 @@ export function authenticationEpicFactory(userAuthenticatorService: any) {
 
                         return authAction.loginSuccess('Success!');
                     })
-                    .catch((err: any) => authAction.loginFail(err.message)),
+                    .catch((err: any) => authAction.loginFailure(err.message)),
             ),
         );
 
-    return combineEpics(loginEpic);
+    const createAccountEpic = (action$: ActionsObservable<authAction.CreateAccountRequestAction>) =>
+        action$.pipe(
+            ofType(authAction.CREATE_ACCOUNT_REQUESTED),
+            pluck('payload'),
+            mergeMap((credentials: Credentials) =>
+                userAuthenticatorService
+                    .createAccount(credentials)
+                    .then((res: any) => {
+                        console.log(res);
+                        return authAction.createAccountSuccess('Created!!!');
+                    })
+                    .catch((err: any) => authAction.createAccountFailure(err.message)),
+            ),
+        );
+
+    return combineEpics(loginEpic, createAccountEpic);
 }

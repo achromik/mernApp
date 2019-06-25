@@ -9,9 +9,19 @@ export class UserAuthenticator {
         try {
             return await this.http.POST<Credentials, JWTTokenData>('users/login', credentials);
         } catch (error) {
-            // const errorMsg = error.code === 400 ? error.body.message : 'Connection Error';
+            const errorMsg = error.code === 400 ? error.body.message : 'Connection Error';
 
-            return Promise.reject(new Error(error));
+            return Promise.reject(new Error(errorMsg));
+        }
+    }
+
+    public async createAccount(credentials: Credentials): Promise<string> {
+        try {
+            return await this.http.POST<Credentials, string>('users/register', credentials);
+        } catch (error) {
+            const errorMsg = error.code === 409 ? error.body.message : 'Connection Error';
+
+            return Promise.reject(new Error(errorMsg));
         }
     }
 }

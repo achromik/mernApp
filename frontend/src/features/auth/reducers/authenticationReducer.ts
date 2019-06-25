@@ -1,4 +1,9 @@
-import { LOGIN_FAIL, LOGIN_REQUESTED, LOGIN_SUCCEEDED } from '../actions/authenticationActions';
+import {
+    LOGIN_FAILED,
+    LOGIN_REQUESTED,
+    LOGIN_SUCCEEDED,
+    AuthAction,
+} from '../actions/authenticationActions';
 import { AuthState } from '../models/auth';
 
 const defaultState = {
@@ -8,7 +13,7 @@ const defaultState = {
     message: '',
 };
 
-export const authentication = (state: AuthState = defaultState, action: any) => {
+export const authentication = (state: AuthState = defaultState, action: AuthAction) => {
     switch (action.type) {
         case LOGIN_REQUESTED:
             return {
@@ -25,7 +30,7 @@ export const authentication = (state: AuthState = defaultState, action: any) => 
                 isFetching: false,
                 message: action.payload,
             };
-        case LOGIN_FAIL:
+        case LOGIN_FAILED:
             return {
                 ...state,
                 failed: true,
