@@ -7,7 +7,10 @@
         "indent": false,
         "label-position": true,
         "label-undefined": true,
-        "max-line-length": [true, 100],
+        "max-line-length": [
+            true,
+            { "limimt": 100, "ignore-pattern": "^import [^,]+ from |^export | implements" }
+        ],
         "no-arg": true,
         "no-bitwise": true,
         "no-console": true,
@@ -41,7 +44,14 @@
         ],
         "use-strict": true,
         "variable-name": [true, "allow-leading-underscore"],
-        "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"],
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-separator",
+            "check-type"
+        ],
         "prefer-const": true
     }
 }
