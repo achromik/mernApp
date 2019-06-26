@@ -5,6 +5,7 @@ export const validateEnv = (): void => {
         PORT: port(),
         DATABASE_URI: str(),
         DATABASE_NAME: str(),
-        SECRET_KEY: str(),
+        JWT_SECRET_KEY: str(),
+        JWT_REFRESH_SECRET_KEY: str(),
     });
 };

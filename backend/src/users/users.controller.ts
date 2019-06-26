@@ -12,7 +12,8 @@ import { InternalErrorException } from '../exceptions/InternalErrorException';
 export class UsersController implements Controller {
     public path = '/users';
     public router = express.Router();
-    private secretKey = process.env.SECRET_KEY as string;
+    private secretKey = process.env.JWT_SECRET_KEY as string;
+    private refreshSecretKey = process.env.JWT_REFRESH_SECRET_KEY as string;
     private user = userModel;
 
     public constructor() {
@@ -58,7 +59,7 @@ export class UsersController implements Controller {
                 .findOne({
                     email: req.body.email,
                 })
-                .then(user => {
+                .then(async user => {
                     if (user && bcrypt.compareSync(req.body.password, user.password)) {
                         const payload = {
                             _id: user._id,
@@ -67,11 +68,24 @@ export class UsersController implements Controller {
                             email: user.email,
                         };
 
-                        const token = jwt.sign(payload, this.secretKey, {
-                            expiresIn: 1440,
+                        const token = await jwt.sign(payload, this.secretKey, {
+                            expiresIn: '1m',
                         });
 
-                        res.status(200).json({ token });
+                        const refreshToken = await jwt.sign(
+                            { userID: user._id },
+                            this.refreshSecretKey,
+                            {
+                                expiresIn: '2d',
+                            },
+                        );
+
+                        const updatedUser = await this.user.updateOne(
+                            { _id: user._id },
+                            { refreshToken: refreshToken, status: true },
+                        );
+
+                        res.status(200).json({ token, refreshToken, updatedUser });
                     } else {
                         next(new InvalidCredentialsException());
                     }
@@ -86,14 +100,11 @@ export class UsersController implements Controller {
         res: express.Response,
         next: express.NextFunction,
     ) => {
-        const today = new Date();
-
         const userData = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             password: req.body.password,
-            created: today,
         };
         try {
             this.user
