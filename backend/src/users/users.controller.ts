@@ -101,10 +101,7 @@ export class UsersController implements Controller {
         next: express.NextFunction,
     ) => {
         const userData = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: req.body.password,
+            ...req.body,
         };
         try {
             this.user
