@@ -5,6 +5,7 @@ import * as cors from 'cors';
 
 import { Controller } from './interfaces/controller.interface';
 import { errorMiddleware } from './middleware/error.middleware';
+import { loggerMiddleware } from './middleware/logger.middleware';
 
 export class App {
     public app: express.Application;
@@ -26,6 +27,7 @@ export class App {
                 extended: false,
             }),
         );
+        this.app.use(loggerMiddleware);
     }
 
     private initializeControllers(controllers: Controller[]): void {
