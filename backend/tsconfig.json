@@ -1,7 +1,7 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "paths": { "*": ["types/*"], "src/*": ["./src/*"] },
+        "paths": { "*": ["types/*"] },
         "module": "commonjs",
         "strict": true,
         "baseUrl": ".",
