@@ -1,6 +1,6 @@
 export interface DataStoredInToken {
     _id: string;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     email: string;
 }
