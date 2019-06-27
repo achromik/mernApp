@@ -33,6 +33,7 @@ export class AuthenticationController implements Controller {
         this.router.post(`${this.path}/register`, this.registration);
         this.router.post(`${this.path}/login`, this.loggingIn);
         this.router.post(`${this.path}/refreshToken`, this.refreshingToken);
+        this.router.post(`${this.path}/logout`, this.loggingOut);
     }
 
     private createToken = async (user: User): Promise<string> => {
@@ -166,6 +167,21 @@ export class AuthenticationController implements Controller {
             }
         } catch (err) {
             next(this.handleRefreshTokenExpiredError(err));
+        }
+    };
+
+    private loggingOut = async (
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction,
+    ) => {
+        try {
+            await this.refreshToken.findOneAndDelete({
+                value: req.body.refreshToken,
+            });
+            res.status(200).send({ message: 'Logged out' });
+        } catch (err) {
+            next(new Error('not yet implemented'));
         }
     };
 
