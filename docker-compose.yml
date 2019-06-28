@@ -6,6 +6,7 @@ services:
     container_name: ${APP_NAME}_frontend
     restart: always
 
+
   backend:
     image: ${APP_NAME}_backend
     container_name: ${APP_NAME}_backend
@@ -16,6 +17,8 @@ services:
       - mongo
     links:
       - mongo
+    env_file:
+      - ./.env
     environment:
       WAIT_HOSTS: mongo:27017
 
