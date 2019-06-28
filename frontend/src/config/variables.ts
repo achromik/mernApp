@@ -6,4 +6,5 @@ export const colors = {
 export const sizes = {
     paddingM: '1rem',
     marginM: '1rem',
+    marginXL: '5rem',
 };
