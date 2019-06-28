@@ -50,7 +50,7 @@ const Login: React.FC<StateProps> = ({ isAuthenticated, loginRequest }: StatePro
                     </Grid>
                     <Grid item xs={12}>
                         <Typography component="h1" variant="h5">
-                            Sing in
+                            Sign in
                         </Typography>
                     </Grid>
                 </GridStyled>
