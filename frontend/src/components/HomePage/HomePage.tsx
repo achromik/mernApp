@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { styled } from '@material-ui/styles';
 import { Container, Typography, Button } from '@material-ui/core';
 import CancelOutlined from '@material-ui/icons/CancelOutlined';
 
 import { sizes } from '@src/config/variables';
 import * as auth from '@src/features/auth/selectors/authenticationSelector';
+import { logoutRequest } from '@src/features/auth/actions/authenticationActions';
 import { AppState } from '@src/config/appState';
 import { BackgroundImage } from 'Common/components/BackgroundImage';
 import { SignButtons } from 'Components/HomePage/SignButtons';
@@ -35,9 +35,15 @@ const LogoutIcon = styled(CancelOutlined)({
 
 interface HomeState {
     isAuthenticated: boolean;
+    logoutRequest: () => void;
 }
 
-const Home: React.FC<HomeState> = ({ isAuthenticated }: HomeState) => {
+const Home: React.FC<HomeState> = ({ isAuthenticated, logoutRequest }: HomeState) => {
+    const handleLogoutClick = (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        logoutRequest();
+    };
+
     return (
         <PageWrapper maxWidth={false}>
             <BackgroundImage />
@@ -54,8 +60,7 @@ const Home: React.FC<HomeState> = ({ isAuthenticated }: HomeState) => {
                         variant="contained"
                         color="primary"
                         size="large"
-                        // component={Link}
-                        // to="/logout"
+                        onClick={handleLogoutClick}
                     >
                         <LogoutIcon />
                         Logout
@@ -70,6 +75,9 @@ const mapStateToProps = (state: AppState): { isAuthenticated: boolean } => ({
     isAuthenticated: auth.isAuthenticated(state),
 });
 
-const HomePage = connect(mapStateToProps)(Home);
+const HomePage = connect(
+    mapStateToProps,
+    { logoutRequest },
+)(Home);
 
 export default HomePage;
