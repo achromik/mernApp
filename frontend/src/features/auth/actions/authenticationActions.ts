@@ -15,7 +15,7 @@ export type LoginFailureAction = Action<typeof LOGIN_FAILED, string>;
 export const loginFailure = creator<LoginFailureAction>(LOGIN_FAILED);
 
 export const LOGOUT_REQUESTED = 'LOGOUT_REQUESTED';
-export type LogoutRequestAction = Action<typeof LOGOUT_REQUESTED, Credentials>;
+export type LogoutRequestAction = Action<typeof LOGOUT_REQUESTED>;
 export const logoutRequest = creator<LogoutRequestAction>(LOGOUT_REQUESTED);
 
 export const LOGOUT_SUCCEEDED = 'LOGOUT_SUCCEEDED';
