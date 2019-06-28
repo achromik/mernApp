@@ -33,7 +33,7 @@ export class Http {
 
         const headers = omit(
             {
-                Authorization: jwt && `JWT ${JSON.parse(jwt)}`,
+                Authorization: jwt && `JWT ${jwt}`,
                 'Content-Type': 'application/json',
             },
             useFormData ? 'Content-Type' : '',
