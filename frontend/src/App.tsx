@@ -4,12 +4,25 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { createEpicMiddleware } from 'redux-observable';
 import throttle from 'lodash/throttle';
+import { MuiThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
 import { Root } from './Root';
 import { rootEpic } from '@src/config/rootEpic';
 import { rootReducer } from '@src/config/rootReducer';
 import { loadState, saveState } from 'Common/helpers/localStorage';
 import { appInit } from 'Common/actions/init';
+
+const theme = responsiveFontSizes(
+    createMuiTheme({
+        typography: {
+            fontFamily: 'Lato',
+            fontSize: 16,
+            fontWeightLight: 300,
+            fontWeightRegular: 400,
+            fontWeightMedium: 500,
+        },
+    }),
+);
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -36,8 +49,10 @@ store.subscribe(
 epicMiddleware.run(rootEpic);
 
 const App: React.FC = () => (
-    <Provider store={store}>
-        <Root />
-    </Provider>
+    <MuiThemeProvider theme={theme}>
+        <Provider store={store}>
+            <Root />
+        </Provider>
+    </MuiThemeProvider>
 );
 export default App;
