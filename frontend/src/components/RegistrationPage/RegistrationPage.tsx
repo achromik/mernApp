@@ -47,7 +47,7 @@ const Registration: React.FC<StateProps> = ({
     return (
         <>
             {isAuthenticated && <Redirect to="/profile" />}
-            {succeeded && <Redirect to="/login" />}
+
             <Container component="main" maxWidth="sm">
                 <GridStyled container direction="column" alignItems="center">
                     <Grid item xs={12}>
