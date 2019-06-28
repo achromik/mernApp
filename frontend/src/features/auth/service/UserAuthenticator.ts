@@ -1,7 +1,6 @@
 import { Http } from '@src/services/Http';
 
 import { Credentials, JWTTokenData } from '@src/features/auth/models/auth';
-import { number } from 'prop-types';
 
 interface HttpServiceError {
     code: number;
