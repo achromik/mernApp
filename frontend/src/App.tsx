@@ -10,7 +10,7 @@ import { Root } from './Root';
 import { rootEpic } from '@src/config/rootEpic';
 import { rootReducer } from '@src/config/rootReducer';
 import { loadState, saveState } from 'Common/helpers/localStorage';
-import { appInit } from 'Common/actions/init';
+import { appInit } from 'Common/actions/sharedActions';
 
 const theme = responsiveFontSizes(
     createMuiTheme({
