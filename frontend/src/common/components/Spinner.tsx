@@ -5,11 +5,10 @@ import { colors } from '@src/config/variables';
 import { spin } from '@src/config/keyframes';
 
 const Loader = styled.div`
-    border-radius: 50%;
-    width: 3rem;
-    height: 3rem;
-    margin: 60px auto;
     position: relative;
+    border-radius: 50%;
+    height: 3rem;
+    width: 3rem;
     text-indent: -9999em;
     border-top: 0.5rem solid ${colors.spinnerBackgroundColor};
     border-right: 0.5rem solid ${colors.spinnerBackgroundColor};
@@ -19,11 +18,24 @@ const Loader = styled.div`
     animation: ${spin} 1.1s infinite linear;
 
     :after {
-        border-radius: 50%;
+        content: ' ';
         width: 3rem;
         height: 3rem;
-        content: ' ';
+        border-radius: 50%;
     }
 `;
 
-export const Spinner: React.FC = () => <Loader>Loading</Loader>;
+const Wrapper = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+`;
+
+export const Spinner: React.FC = () => (
+    <Wrapper>
+        <Loader>Loading</Loader>
+    </Wrapper>
+);
