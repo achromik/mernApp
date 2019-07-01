@@ -2,7 +2,7 @@ import { combineEpics, ofType, ActionsObservable } from 'redux-observable';
 import { mergeMap, pluck, switchMap } from 'rxjs/operators';
 
 import * as authAction from '../actions/authenticationActions';
-import { Credentials } from '../models/auth';
+import { Credentials, RegistrationData } from '../models/auth';
 
 export function authenticationEpicFactory(userAuthenticatorService: any) {
     const loginEpic = (action$: ActionsObservable<authAction.LoginRequestAction>) =>
@@ -26,11 +26,14 @@ export function authenticationEpicFactory(userAuthenticatorService: any) {
         action$.pipe(
             ofType(authAction.CREATE_ACCOUNT_REQUESTED),
             pluck('payload'),
-            mergeMap((credentials: Credentials) =>
+            mergeMap((registrationData: RegistrationData) =>
                 userAuthenticatorService
-                    .createAccount(credentials)
+                    .createAccount(registrationData)
                     .then(() => authAction.createAccountSuccess('Created!!!'))
-                    .catch((err: any) => authAction.createAccountFailure(err.message)),
+                    .catch((err: any) => {
+                        console.log(err.body);
+                        return authAction.createAccountFailure(err.message);
+                    }),
             ),
         );
 

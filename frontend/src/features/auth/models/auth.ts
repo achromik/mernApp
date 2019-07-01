@@ -20,3 +20,8 @@ export interface SignUpState {
     isFetching: boolean;
     succeeded: boolean;
 }
+
+export interface RegistrationData extends Credentials {
+    firstName?: string;
+    lastName?: string;
+}

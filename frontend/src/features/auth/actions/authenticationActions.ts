@@ -1,6 +1,6 @@
 import { Action, creator } from '@src/config/rootAction';
 
-import { Credentials } from '../models/auth';
+import { Credentials, RegistrationData } from '../models/auth';
 
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
 export type LoginRequestAction = Action<typeof LOGIN_REQUESTED, Credentials>;
@@ -27,7 +27,7 @@ export type LogoutFailureAction = Action<typeof LOGOUT_FAILED, string>;
 export const logoutFailure = creator<LogoutFailureAction>(LOGOUT_FAILED);
 
 export const CREATE_ACCOUNT_REQUESTED = 'CREATE_ACCOUNT_REQUESTED';
-export type CreateAccountRequestAction = Action<typeof CREATE_ACCOUNT_REQUESTED, Credentials>;
+export type CreateAccountRequestAction = Action<typeof CREATE_ACCOUNT_REQUESTED, RegistrationData>;
 export const createAccountRequest = creator<CreateAccountRequestAction>(CREATE_ACCOUNT_REQUESTED);
 
 export const CREATE_ACCOUNT_SUCCEEDED = 'CREATE_ACCOUNT_SUCCEEDED';
@@ -38,6 +38,12 @@ export const CREATE_ACCOUNT_FAILED = 'CREATE_ACCOUNT_FAILED';
 export type CreateAccountFailureAction = Action<typeof CREATE_ACCOUNT_FAILED, string>;
 export const createAccountFailure = creator<CreateAccountFailureAction>(CREATE_ACCOUNT_FAILED);
 
+export const CLEAR_REGISTRATION_ERROR = 'CLEAR_REGISTRATION_ERROR';
+export type ClearRegistrationErrorAction = Action<typeof CLEAR_REGISTRATION_ERROR>;
+export const clearRegistrationError = creator<ClearRegistrationErrorAction>(
+    CLEAR_REGISTRATION_ERROR,
+);
+
 export type AuthAction =
     | LoginRequestAction
     | LoginSuccessAction
@@ -47,4 +53,5 @@ export type AuthAction =
     | LogoutFailureAction
     | CreateAccountRequestAction
     | CreateAccountSuccessAction
-    | CreateAccountFailureAction;
+    | CreateAccountFailureAction
+    | ClearRegistrationErrorAction;
