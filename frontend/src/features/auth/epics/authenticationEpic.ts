@@ -30,10 +30,7 @@ export function authenticationEpicFactory(userAuthenticatorService: any) {
                 userAuthenticatorService
                     .createAccount(registrationData)
                     .then(() => authAction.createAccountSuccess('Created!!!'))
-                    .catch((err: any) => {
-                        console.log(err.body);
-                        return authAction.createAccountFailure(err.message);
-                    }),
+                    .catch((err: any) => authAction.createAccountFailure(err.message)),
             ),
         );
 

@@ -7,11 +7,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Button } from '@material-ui/core';
 
 interface ErrorDialogProps {
+    title?: string;
     open: boolean;
     children: React.ReactNode;
     action: Function;
 }
 export const ErrorDialog: React.FC<ErrorDialogProps> = ({
+    title = 'Oops, something went wrong...',
     open,
     children,
     action,
@@ -20,7 +22,7 @@ export const ErrorDialog: React.FC<ErrorDialogProps> = ({
 
     return (
         <Dialog open={open}>
-            <DialogTitle>Test</DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
             <DialogContent>
                 <DialogContentText>{children}</DialogContentText>
             </DialogContent>

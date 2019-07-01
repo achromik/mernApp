@@ -143,7 +143,6 @@ const Registration: React.FC<RegistrationProps> = ({
                 <ErrorDialog
                     open={isRegistrationFailed}
                     action={() => {
-                        console.log('test');
                         clearRegistrationError();
                     }}
                 >

@@ -26,6 +26,10 @@ export const LOGOUT_FAILED = 'LOGOUT_FAILED';
 export type LogoutFailureAction = Action<typeof LOGOUT_FAILED, string>;
 export const logoutFailure = creator<LogoutFailureAction>(LOGOUT_FAILED);
 
+export const CLEAR_LOGIN_ERROR = 'CLEAR_LOGIN_ERROR';
+export type ClearLoginErrorAction = Action<typeof CLEAR_LOGIN_ERROR>;
+export const clearLoginError = creator<ClearLoginErrorAction>(CLEAR_LOGIN_ERROR);
+
 export const CREATE_ACCOUNT_REQUESTED = 'CREATE_ACCOUNT_REQUESTED';
 export type CreateAccountRequestAction = Action<typeof CREATE_ACCOUNT_REQUESTED, RegistrationData>;
 export const createAccountRequest = creator<CreateAccountRequestAction>(CREATE_ACCOUNT_REQUESTED);
@@ -51,6 +55,7 @@ export type AuthAction =
     | LogoutRequestAction
     | LogoutSuccessAction
     | LogoutFailureAction
+    | ClearLoginErrorAction
     | CreateAccountRequestAction
     | CreateAccountSuccessAction
     | CreateAccountFailureAction

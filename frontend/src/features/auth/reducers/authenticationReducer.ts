@@ -6,6 +6,7 @@ import {
     LOGOUT_SUCCEEDED,
     LOGOUT_FAILED,
     AuthAction,
+    CLEAR_LOGIN_ERROR,
 } from '../actions/authenticationActions';
 import { AuthState } from '../models/auth';
 
@@ -62,6 +63,12 @@ export const authentication = (state: AuthState = defaultState, action: AuthActi
                 failed: true,
                 isFetching: false,
                 message: action.payload,
+            };
+        case CLEAR_LOGIN_ERROR:
+            return {
+                ...state,
+                failed: false,
+                message: '',
             };
         default:
             return state;
