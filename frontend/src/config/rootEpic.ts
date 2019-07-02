@@ -11,4 +11,4 @@ export const rootEpic = combineEpics(
     navigationRedirectEpicFactory(),
 );
 
-export type Epic = _Epic<AppAction, AppAction>;
+export type Epic = _Epic<AppAction>;
