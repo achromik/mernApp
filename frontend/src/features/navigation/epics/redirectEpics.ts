@@ -5,7 +5,14 @@ import { REDIRECT_TO_URL, redirectToUrl, RedirectToUrlAction } from '../actions/
 import { Epic } from '@src/config/rootEpic';
 import { history } from '@src/config/history';
 import { noOperation } from 'Common/actions/sharedActions';
-import * as auth from '@src/features/auth/actions/authenticationActions';
+import {
+    CREATE_ACCOUNT_SUCCEEDED,
+    LOGOUT_SUCCEEDED,
+    LOGIN_SUCCEEDED,
+    CreateAccountSuccessAction,
+    LogoutSuccessAction,
+    LoginSuccessAction,
+} from '@src/features/auth/actions/authenticationActions';
 
 export function navigationRedirectEpicFactory(): Epic {
     const navigationRedirectEpic = (action$: ActionsObservable<RedirectToUrlAction>) =>
@@ -18,11 +25,17 @@ export function navigationRedirectEpicFactory(): Epic {
 
     const redirectToLoginScreenEpic = (action$: ActionsObservable<RedirectToLoginScreen>) =>
         action$.pipe(
-            ofType(auth.CREATE_ACCOUNT_SUCCEEDED),
+            ofType(CREATE_ACCOUNT_SUCCEEDED, LOGOUT_SUCCEEDED),
             map(() => redirectToUrl('/login')),
         );
 
-    return combineEpics(navigationRedirectEpic, redirectToLoginScreenEpic);
+    const redirectToDashboardEpic = (action$: ActionsObservable<LoginSuccessAction>) =>
+        action$.pipe(
+            ofType(LOGIN_SUCCEEDED),
+            map(() => redirectToUrl('/dashboard')),
+        );
+
+    return combineEpics(navigationRedirectEpic, redirectToLoginScreenEpic, redirectToDashboardEpic);
 }
 
-type RedirectToLoginScreen = auth.CreateAccountSuccessAction;
+type RedirectToLoginScreen = CreateAccountSuccessAction | LogoutSuccessAction;

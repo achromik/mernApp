@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import * as lodash from 'lodash';
+import omit from 'lodash/omit';
 
 import { Controller } from '../interfaces/controller.interface';
 import userModel from '../users/user.model';
@@ -77,7 +77,7 @@ export class AuthenticationController implements Controller {
                     ...userData,
                     password: hashedPassword,
                 });
-                const userWithoutPasswordField = lodash.omit(createdUser.toObject(), ['password']);
+                const userWithoutPasswordField = omit(createdUser.toObject(), ['password']);
 
                 res.status(200).json(userWithoutPasswordField);
             } else {

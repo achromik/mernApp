@@ -47,13 +47,13 @@ const Login: React.FC<LoginProps> = ({
     errorMessage,
     loginRequest,
     clearLoginError,
-}: LoginProps) => {
+}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     return (
         <>
-            {isAuthenticated && <Redirect to="/profile" />}
+            {isAuthenticated && <Redirect to="/dashboard" />}
             <Container component="main" maxWidth="sm">
                 <GridStyled container direction="column" alignItems="center">
                     <Grid item xs={12}>
