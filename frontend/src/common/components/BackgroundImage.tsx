@@ -1,9 +1,8 @@
-import * as React from 'react';
 import styled from '@emotion/styled';
 
-const BlurredImage = styled.div`
+export const BackgroundImage = styled.div`
     position: absolute;
-    height: 100vh;
+    height: 100%;
     width: 100vw;
     background: #00c6ff;
     filter: blur(2px);
@@ -13,5 +12,3 @@ const BlurredImage = styled.div`
     background-position: center;
     z-index: -1;
 `;
-
-export const BackgroundImage: React.FC = () => <BlurredImage />;

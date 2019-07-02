@@ -43,7 +43,7 @@ interface StateProps {
 
 interface RegistrationProps extends StateProps {
     createAccountRequest: (registrationData: RegistrationData) => void;
-    clearRegistrationError: () => void;
+    clearRegistrationError: typeof clearRegistrationError;
 }
 
 const Registration: React.FC<RegistrationProps> = ({
@@ -52,7 +52,7 @@ const Registration: React.FC<RegistrationProps> = ({
     registrationMessage,
     createAccountRequest,
     clearRegistrationError,
-}: RegistrationProps) => {
+}) => {
     const { value: email, onChange: onEmailChange } = useInput('');
     const { value: password, onChange: onPasswordChange } = useInput('');
     const { value: firstName, onChange: onFirstNameChange } = useInput('');
@@ -140,12 +140,7 @@ const Registration: React.FC<RegistrationProps> = ({
                         </Grid>
                     </Grid>
                 </form>
-                <ErrorDialog
-                    open={isRegistrationFailed}
-                    action={() => {
-                        clearRegistrationError();
-                    }}
-                >
+                <ErrorDialog open={isRegistrationFailed} action={clearRegistrationError}>
                     {registrationMessage}
                 </ErrorDialog>
             </Container>

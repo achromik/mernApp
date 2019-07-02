@@ -12,15 +12,16 @@ import { BackgroundImage } from 'Common/components/BackgroundImage';
 import { SignButtons } from 'Components/HomePage/SignButtons';
 
 const PageWrapper = styled(Container)({
-    position: 'relative',
-    padding: 0,
-    height: '100vh',
+    position: 'absolute',
+    minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
     overflow: 'hidden',
+    top: 0,
+    bottom: 0,
 });
 
 const ButtonsWrapper = styled(Container)({
@@ -35,10 +36,10 @@ const LogoutIcon = styled(CancelOutlined)({
 
 interface HomeState {
     isAuthenticated: boolean;
-    logoutRequest: () => void;
+    logoutRequest: typeof logoutRequest;
 }
 
-const Home: React.FC<HomeState> = ({ isAuthenticated, logoutRequest }: HomeState) => {
+const Home: React.FC<HomeState> = ({ isAuthenticated, logoutRequest }) => {
     const handleLogoutClick = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         logoutRequest();

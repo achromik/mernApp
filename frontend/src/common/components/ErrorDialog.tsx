@@ -9,7 +9,6 @@ import { Button } from '@material-ui/core';
 interface ErrorDialogProps {
     title?: string;
     open: boolean;
-    children: React.ReactNode;
     action: Function;
 }
 export const ErrorDialog: React.FC<ErrorDialogProps> = ({
@@ -17,7 +16,7 @@ export const ErrorDialog: React.FC<ErrorDialogProps> = ({
     open,
     children,
     action,
-}: ErrorDialogProps) => {
+}) => {
     const handleClick = () => action();
 
     return (

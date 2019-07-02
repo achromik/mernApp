@@ -38,7 +38,7 @@ interface StateProps {
 
 interface LoginProps extends StateProps {
     loginRequest: (credentials: Credentials) => void;
-    clearLoginError: () => void;
+    clearLoginError: typeof clearLoginError;
 }
 
 const Login: React.FC<LoginProps> = ({
