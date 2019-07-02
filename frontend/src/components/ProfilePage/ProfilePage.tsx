@@ -8,7 +8,7 @@ interface StateProps {
     isAuthenticated: boolean;
 }
 
-const Profile: React.FC<StateProps> = ({ isAuthenticated }: StateProps) => {
+const Profile: React.FC<StateProps> = ({ isAuthenticated }) => {
     return (
         <div>
             <h1>Profile Page</h1>

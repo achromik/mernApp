@@ -8,8 +8,13 @@ const HomePage = lazy(() => import('Components/HomePage/HomePage'));
 const LoginPage = lazy(() => import('Components/LoginPage/LoginPage'));
 const ProfilePage = lazy(() => import('Components/ProfilePage/ProfilePage'));
 const RegistrationPage = lazy(() => import('Components/RegistrationPage/RegistrationPage'));
+const DashboardPage = lazy(() => import('Components/DashboardPage/DashboardPage'));
 
-export const Routes = ({ isAuthenticated }: { isAuthenticated: boolean }) => (
+interface RoutesProps {
+    isAuthenticated: boolean;
+}
+
+export const Routes = ({ isAuthenticated }: RoutesProps) => (
     <Suspense fallback={<Spinner />}>
         <Switch>
             <CustomRoute
@@ -39,6 +44,14 @@ export const Routes = ({ isAuthenticated }: { isAuthenticated: boolean }) => (
                 key="/registration"
                 path="/registration"
                 component={RegistrationPage}
+                isAuthenticated={isAuthenticated}
+            />
+            <CustomRoute
+                exact
+                key="/dashboard"
+                path="/dashboard"
+                component={DashboardPage}
+                secured={true}
                 isAuthenticated={isAuthenticated}
             />
         </Switch>
