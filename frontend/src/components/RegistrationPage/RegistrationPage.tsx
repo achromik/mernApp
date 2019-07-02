@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -12,12 +12,17 @@ import Button from '@material-ui/core/Button';
 import { styled } from '@material-ui/styles';
 import pink from '@material-ui/core/colors/pink';
 
+import { useInput } from 'Common/hooks/inputHook';
 import { sizes } from '@src/config/variables';
 import { AppState } from '@src/config/appState';
 import * as auth from '@src/features/auth/selectors/authenticationSelector';
-import * as signUp from '@src/features/auth/selectors/signUpSelector';
-import { createAccountRequest } from '@src/features/auth/actions/authenticationActions';
-import { Credentials } from '@src/features/auth/models/auth';
+import * as registration from '@src/features/auth/selectors/signUpSelector';
+import {
+    createAccountRequest,
+    clearRegistrationError,
+} from '@src/features/auth/actions/authenticationActions';
+import { RegistrationData } from '@src/features/auth/models/auth';
+import { ErrorDialog } from '../../common/components/ErrorDialog';
 
 const AvatarStyled = styled(Avatar)({
     background: pink[500],
@@ -32,22 +37,36 @@ const GridStyled = styled(Grid)({
 
 interface StateProps {
     isAuthenticated: boolean;
-    succeeded: boolean;
-    createAccountRequest: (credentials: Credentials) => void;
+    isRegistrationFailed: boolean;
+    registrationMessage: string;
 }
 
-const Registration: React.FC<StateProps> = ({
+interface RegistrationProps extends StateProps {
+    createAccountRequest: (registrationData: RegistrationData) => void;
+    clearRegistrationError: typeof clearRegistrationError;
+}
+
+const Registration: React.FC<RegistrationProps> = ({
     isAuthenticated,
-    succeeded,
+    isRegistrationFailed,
+    registrationMessage,
     createAccountRequest,
-}: StateProps) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    clearRegistrationError,
+}) => {
+    const { value: email, onChange: onEmailChange } = useInput('');
+    const { value: password, onChange: onPasswordChange } = useInput('');
+    const { value: firstName, onChange: onFirstNameChange } = useInput('');
+    const { value: lastName, onChange: onLastNameChange } = useInput('');
+
+    const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
+        e.preventDefault();
+        createAccountRequest({ email, password, firstName, lastName });
+    };
 
     return (
         <>
             {isAuthenticated && <Redirect to="/profile" />}
-            {succeeded && <Redirect to="/login" />}
+
             <Container component="main" maxWidth="sm">
                 <GridStyled container direction="column" alignItems="center">
                     <Grid item xs={12}>
@@ -61,24 +80,18 @@ const Registration: React.FC<StateProps> = ({
                         </Typography>
                     </Grid>
                 </GridStyled>
-                <form
-                    noValidate
-                    onSubmit={e => {
-                        e.preventDefault();
-                        createAccountRequest({ email, password });
-                    }}
-                >
+                <form noValidate onSubmit={handleSubmit}>
                     <GridStyled container spacing={3} justify="center">
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                autoComplete="fname"
-                                name="firstName"
                                 variant="outlined"
                                 required
                                 fullWidth
                                 id="firstName"
+                                name="firstName"
                                 label="First Name"
                                 autoFocus
+                                onChange={onFirstNameChange}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -87,9 +100,9 @@ const Registration: React.FC<StateProps> = ({
                                 required
                                 fullWidth
                                 id="lastName"
-                                label="Last Name"
                                 name="lastName"
-                                autoComplete="lname"
+                                label="Last Name"
+                                onChange={onLastNameChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -100,8 +113,7 @@ const Registration: React.FC<StateProps> = ({
                                 id="email"
                                 label="Email Address"
                                 name="email"
-                                autoComplete="email"
-                                onChange={e => setEmail(e.target.value)}
+                                onChange={onEmailChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -113,8 +125,7 @@ const Registration: React.FC<StateProps> = ({
                                 label="Password"
                                 type="password"
                                 id="password"
-                                autoComplete="current-password"
-                                onChange={e => setPassword(e.target.value)}
+                                onChange={onPasswordChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -129,19 +140,23 @@ const Registration: React.FC<StateProps> = ({
                         </Grid>
                     </Grid>
                 </form>
+                <ErrorDialog open={isRegistrationFailed} action={clearRegistrationError}>
+                    {registrationMessage}
+                </ErrorDialog>
             </Container>
         </>
     );
 };
 
-const mapStateToProps = (state: AppState): { isAuthenticated: boolean; succeeded: boolean } => ({
+const mapStateToProps = (state: AppState): StateProps => ({
     isAuthenticated: auth.isAuthenticated(state),
-    succeeded: signUp.succeeded(state),
+    isRegistrationFailed: registration.failed(state),
+    registrationMessage: registration.message(state),
 });
 
 const RegistrationPage = connect(
     mapStateToProps,
-    { createAccountRequest },
+    { createAccountRequest, clearRegistrationError },
 )(Registration);
 
 export default RegistrationPage;

@@ -15,8 +15,9 @@ import pink from '@material-ui/core/colors/pink';
 import { sizes } from '@src/config/variables';
 import { AppState } from '@src/config/appState';
 import * as auth from '@src/features/auth/selectors/authenticationSelector';
-import { loginRequest } from '@src/features/auth/actions/authenticationActions';
+import { loginRequest, clearLoginError } from '@src/features/auth/actions/authenticationActions';
 import { Credentials } from '@src/features/auth/models/auth';
+import { ErrorDialog } from '../../common/components/ErrorDialog';
 
 const AvatarStyled = styled(Avatar)({
     background: pink[500],
@@ -31,10 +32,22 @@ const GridStyled = styled(Grid)({
 
 interface StateProps {
     isAuthenticated: boolean;
-    loginRequest: (credentials: Credentials) => void;
+    isLoginFailed: boolean;
+    errorMessage: string;
 }
 
-const Login: React.FC<StateProps> = ({ isAuthenticated, loginRequest }: StateProps) => {
+interface LoginProps extends StateProps {
+    loginRequest: (credentials: Credentials) => void;
+    clearLoginError: typeof clearLoginError;
+}
+
+const Login: React.FC<LoginProps> = ({
+    isAuthenticated,
+    isLoginFailed,
+    errorMessage,
+    loginRequest,
+    clearLoginError,
+}: LoginProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -50,12 +63,11 @@ const Login: React.FC<StateProps> = ({ isAuthenticated, loginRequest }: StatePro
                     </Grid>
                     <Grid item xs={12}>
                         <Typography component="h1" variant="h5">
-                            Sing in
+                            Sign in
                         </Typography>
                     </Grid>
                 </GridStyled>
                 <form
-                    noValidate
                     onSubmit={e => {
                         e.preventDefault();
                         console.log(email, password);
@@ -100,18 +112,23 @@ const Login: React.FC<StateProps> = ({ isAuthenticated, loginRequest }: StatePro
                         <Link to="/registration">Don't have an account? Sign Up</Link>
                     </Grid>
                 </Grid>
+                <ErrorDialog open={isLoginFailed} action={clearLoginError}>
+                    {errorMessage}
+                </ErrorDialog>
             </Container>
         </>
     );
 };
 
-const mapStateToProps = (state: AppState): { isAuthenticated: boolean } => ({
+const mapStateToProps = (state: AppState): StateProps => ({
     isAuthenticated: auth.isAuthenticated(state),
+    isLoginFailed: auth.failed(state),
+    errorMessage: auth.message(state),
 });
 
 const LoginPage = connect(
     mapStateToProps,
-    { loginRequest },
+    { loginRequest, clearLoginError },
 )(Login);
 
 export default LoginPage;

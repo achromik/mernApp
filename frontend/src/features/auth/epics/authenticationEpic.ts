@@ -1,8 +1,8 @@
 import { combineEpics, ofType, ActionsObservable } from 'redux-observable';
-import { mergeMap, pluck } from 'rxjs/operators';
+import { mergeMap, pluck, switchMap } from 'rxjs/operators';
 
 import * as authAction from '../actions/authenticationActions';
-import { Credentials } from '../models/auth';
+import { Credentials, RegistrationData } from '../models/auth';
 
 export function authenticationEpicFactory(userAuthenticatorService: any) {
     const loginEpic = (action$: ActionsObservable<authAction.LoginRequestAction>) =>
@@ -12,8 +12,9 @@ export function authenticationEpicFactory(userAuthenticatorService: any) {
             mergeMap((credentials: Credentials) =>
                 userAuthenticatorService
                     .login(credentials)
-                    .then((res: { token: string }) => {
+                    .then((res: { token: string; refreshToken: string }) => {
                         localStorage.setItem('jwt', res.token);
+                        localStorage.setItem('refreshToken', res.refreshToken);
 
                         return authAction.loginSuccess('Success!');
                     })
@@ -25,16 +26,26 @@ export function authenticationEpicFactory(userAuthenticatorService: any) {
         action$.pipe(
             ofType(authAction.CREATE_ACCOUNT_REQUESTED),
             pluck('payload'),
-            mergeMap((credentials: Credentials) =>
+            mergeMap((registrationData: RegistrationData) =>
                 userAuthenticatorService
-                    .createAccount(credentials)
-                    .then((res: any) => {
-                        console.log(res);
-                        return authAction.createAccountSuccess('Created!!!');
-                    })
+                    .createAccount(registrationData)
+                    .then(() => authAction.createAccountSuccess('Created!!!'))
                     .catch((err: any) => authAction.createAccountFailure(err.message)),
             ),
         );
 
-    return combineEpics(loginEpic, createAccountEpic);
+    const logoutEpic = (action$: ActionsObservable<authAction.LogoutRequestAction>) =>
+        action$.pipe(
+            ofType(authAction.LOGOUT_REQUESTED),
+            pluck('payload'),
+            switchMap(async () => {
+                const refreshToken = await localStorage.getItem('refreshToken');
+                return userAuthenticatorService
+                    .logout(refreshToken)
+                    .then((res: { message: string }) => authAction.logoutSuccess(res.message))
+                    .catch((err: any) => authAction.logoutFailure(err));
+            }),
+        );
+
+    return combineEpics(loginEpic, createAccountEpic, logoutEpic);
 }

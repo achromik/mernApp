@@ -3,6 +3,7 @@ import {
     CREATE_ACCOUNT_REQUESTED,
     CREATE_ACCOUNT_SUCCEEDED,
     CREATE_ACCOUNT_FAILED,
+    CLEAR_REGISTRATION_ERROR,
 } from '../actions/authenticationActions';
 import { SignUpState } from '../models/auth';
 
@@ -31,6 +32,9 @@ export const signUp = (state: SignUpState = defaultState, action: AuthAction) =>
                 message: action.payload,
                 failed: true,
             };
+        case CLEAR_REGISTRATION_ERROR:
+            return { ...state, message: '', failed: false };
+
         default:
             return state;
     }
