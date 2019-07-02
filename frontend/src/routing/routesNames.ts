@@ -1,4 +1,4 @@
-export enum RoutesNames {
+export enum Route {
     Home = '/',
     Login = '/login',
     SignUp = '/registration',
@@ -7,9 +7,9 @@ export enum RoutesNames {
 }
 
 export const routesNames = {
-    [RoutesNames.Home]: 'Home',
-    [RoutesNames.Login]: 'Login Page',
-    [RoutesNames.SignUp]: 'Registration Page',
-    [RoutesNames.Profile]: 'Profile',
-    [RoutesNames.Dashboard]: 'Dashboard',
+    [Route.Home]: 'Home',
+    [Route.Login]: 'Login Page',
+    [Route.SignUp]: 'Registration Page',
+    [Route.Profile]: 'Profile',
+    [Route.Dashboard]: 'Dashboard',
 };

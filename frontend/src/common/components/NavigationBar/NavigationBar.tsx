@@ -12,11 +12,11 @@ import HomeIcon from '@material-ui/icons/Home';
 
 import { ElevationScroll } from './ElevationScroll';
 import { history } from '@src/config/history';
-import { routesNames, RoutesNames } from '@src/routing/routesNames';
+import { routesNames, Route } from '@src/routing/routesNames';
 import { AppMenu } from './AppMenu';
 
 const getPageName = (): string => {
-    return routesNames[history.location.pathname as RoutesNames];
+    return routesNames[history.location.pathname as Route];
 };
 
 const useStyles = makeStyles((theme: Theme) =>
